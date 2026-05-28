@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bootstrap 5 – All Exercises</title>
+  <!-- Bootstrap 5 CDN (Exercise 1.1) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons (Exercise 17) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --ink:      #0d0d0d;
+      --paper:    #f5f2eb;
+      --accent:   #e84d1c;
+      --accent2:  #1c6fe8;
+      --muted:    #6b6760;
+      --rule:     #d8d4cc;
+      --code-bg:  #1e1e2e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    /* ── MASTHEAD ── */
+    .masthead {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 4rem 2rem 3rem;
+      border-bottom: 4px solid var(--accent);
+      position: relative;
+      overflow: hidden;
+    }
+    .masthead::before {
+      content: 'BS5';
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(6rem, 20vw, 16rem);
+      color: rgba(255,255,255,.04);
+      position: absolute;
+      right: -1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      line-height: 1;
+    }
+    .masthead h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 4rem);
+      letter-spacing: -.03em;
+      line-height: 1.1;
+    }
+    .masthead .badge-pill {
+      background: var(--accent);
+      color: #fff;
+      font-family: 'DM Mono', monospace;
+      font-size: .75rem;
+      padding: .35em .8em;
+      border-radius: 100px;
+    }
+
+    /* ── SIDE NAV ── */
+    .sidenav {
+      position: sticky;
+      top: 1.5rem;
+      max-height: calc(100vh - 3rem);
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+    .sidenav-title {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: var(--muted);
+      padding: .5rem 1rem;
+      border-bottom: 1px solid var(--rule);
+      margin-bottom: .25rem;
+    }
+    .sidenav a {
+      display: block;
+      padding: .35rem 1rem;
+      font-size: .83rem;
+      color: var(--ink);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: all .15s;
+    }
+    .sidenav a:hover { border-left-color: var(--accent); color: var(--accent); background: rgba(232,77,28,.05); }
+
+    /* ── EXERCISE CARD ── */
+    .ex-section { margin-bottom: 3rem; }
+    .ex-section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      border-top: 3px solid var(--ink);
+      padding-top: .75rem;
+      margin-bottom: 1.5rem;
+    }
+    .ex-section-title span {
+      font-family: 'DM Mono', monospace;
+      font-size: .85rem;
+      color: var(--accent);
+      font-weight: 400;
+    }
+
+    .ex-card {
+      background: #fff;
+      border: 1.5px solid var(--rule);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      transition: box-shadow .2s;
+    }
+    .ex-card:hover { box-shadow: 4px 4px 0 var(--ink); }
+    .ex-card-header {
+      background: var(--ink);
+      color: var(--paper);
+      padding: .6rem 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .8rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .ex-card-header .num {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 4px;
+      padding: .1em .45em;
+      font-weight: 500;
+    }
+    .ex-card-body { padding: 1.25rem; }
+
+    /* ── LIVE DEMO LABELS ── */
+    .demo-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--muted);
+      margin-bottom: .5rem;
+    }
+
+    /* Exercise-specific tweaks */
+    .pricing-card { transition: transform .2s; }
+    .pricing-card:hover { transform: translateY(-4px); }
+    .overlay-wrap { position: relative; display: inline-block; }
+    .overlay-badge { position: absolute; top: -8px; right: -8px; }
+    .custom-sidebar-demo { background: #f8f9fa; padding: 1rem; border-radius: 8px; }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 2rem;
+      margin-top: 4rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .8rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════ MASTHEAD ════════════════════════════ -->
+<header class="masthead">
+  <div class="container-lg">
+    <span class="badge-pill mb-3 d-inline-block">All 19 Modules · 38 Exercises</span>
+    <h1>Bootstrap 5<br>Exercise Pack</h1>
+    <p class="mt-3 opacity-75" style="max-width:480px;font-size:1.05rem;">
+      Every exercise from the module sheet — live demos embedded inline.
+      Scroll or use the side-nav to jump between sections.
+    </p>
+  </div>
+</header>
+
+<div class="container-xl py-5">
+  <div class="row g-4">
+
+    <!-- ── SIDE NAV ── -->
+    <div class="col-lg-2 d-none d-lg-block">
+      <nav class="sidenav">
+        <div class="sidenav-title">Modules</div>
+        <a href="#s1">1 · Setup</a>
+        <a href="#s2">2 · Structure</a>
+        <a href="#s3">3 · Grid</a>
+        <a href="#s4">4 · Columns</a>
+        <a href="#s5">5 · Alignment</a>
+        <a href="#s6">6 · Flexbox</a>
+        <a href="#s7">7 · Typography</a>
+        <a href="#s8">8 · Forms</a>
+        <a href="#s9">9 · Buttons</a>
+        <a href="#s10">10 · Navbars</a>
+        <a href="#s11">11 · Cards</a>
+        <a href="#s12">12 · Spacing</a>
+        <a href="#s13">13 · Colors</a>
+        <a href="#s14">14 · Display</a>
+        <a href="#s15">15 · Borders</a>
+        <a href="#s16">16 · Position</a>
+        <a href="#s17">17 · Icons</a>
+        <a href="#s18">18 · JS Plugins</a>
+        <a href="#s19">19 · Sass</a>
+      </nav>
+    </div>
+
+    <!-- ── MAIN CONTENT ── -->
+    <div class="col-lg-10">
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 1. SETTING UP BOOTSTRAP 5                     -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s1" class="ex-section">
+        <h2 class="ex-section-title"><span>01 /</span> Setting Up Bootstrap 5</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">1.1</span> Link Bootstrap 5 via CDN</div>
+          <div class="ex-card-body">
+            <p class="demo-label">Head snippet (already applied to this page)</p>
+            <pre style="background:var(--code-bg);color:#cdd6f4;padding:1rem;border-radius:6px;font-size:.82rem;overflow-x:auto"><code>&lt;!-- Bootstrap 5 CSS CDN --&gt;
+&lt;link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"&gt;
+
+&lt;!-- Bootstrap 5 JS Bundle CDN --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"&gt;
+&lt;/script&gt;</code></pre>
+            <div class="alert alert-success mt-3 mb-0">
+              <i class="bi bi-check-circle-fill me-2"></i>
+              This entire page is served via CDN — Bootstrap is active!
+            </div>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">1.2</span> Set up with npm / downloaded files</div>
+          <div class="ex-card-body">
+            <p class="demo-label">Terminal commands</p>
+            <pre style="background:var(--code-bg);color:#cdd6f4;padding:1rem;border-radius:6px;font-size:.82rem;overflow-x:auto"><code>npm init -y
+npm install bootstrap
+
+# Then in your HTML, reference local files:
+# &lt;link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"&gt;
+# &lt;script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 2. STRUCTURE AND FILES                        -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s2" class="ex-section">
+        <h2 class="ex-section-title"><span>02 /</span> Bootstrap Structure &amp; Files</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">2.1</span> Downloaded directory structure explained</div>
+          <div class="ex-card-body">
+            <pre style="background:var(--code-bg);color:#cdd6f4;padding:1rem;border-radius:6px;font-size:.82rem;overflow-x:auto"><code>bootstrap/
+├── css/
+│   ├── bootstrap.min.css       ← Minified full CSS
+│   ├── bootstrap.css           ← Full unminified CSS
+│   ├── bootstrap-grid.css      ← Grid-only build
+│   ├── bootstrap-reboot.css    ← Reboot/normalize only
+│   └── bootstrap-utilities.css ← Utility classes only
+├── js/
+│   ├── bootstrap.bundle.min.js ← JS + Popper.js bundled ✓ recommended
+│   ├── bootstrap.min.js        ← JS only (needs separate Popper)
+│   └── bootstrap.esm.min.js    ← ES Module version
+└── icons/
+    └── (Bootstrap Icons SVG sprite)</code></pre>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">2.2</span> Include bootstrap.bundle.min.js</div>
+          <div class="ex-card-body">
+            <pre style="background:var(--code-bg);color:#cdd6f4;padding:1rem;border-radius:6px;font-size:.82rem;overflow-x:auto"><code>&lt;!-- Place before &lt;/body&gt; --&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"&gt;&lt;/script&gt;
+&lt;!-- bundle includes Popper.js — needed for dropdowns, tooltips, popovers --&gt;</code></pre>
+            <div class="alert alert-info mt-3 mb-0">
+              <i class="bi bi-info-circle-fill me-2"></i>
+              <strong>bundle.min.js</strong> includes Popper.js so you don't need a separate Popper CDN tag.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 3. GRID LAYOUT                                -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s3" class="ex-section">
+        <h2 class="ex-section-title"><span>03 /</span> Responsive Grid Layout</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">3.1</span> Stack → 2-col → 3-col responsive columns</div>
+          <div class="ex-card-body">
+            <p class="demo-label">Live demo</p>
+            <div class="container-fluid p-0">
+              <div class="row g-3">
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="bg-primary text-white rounded p-3 text-center fw-semibold">Column 1</div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="bg-primary text-white rounded p-3 text-center fw-semibold">Column 2</div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-4">
+                  <div class="bg-primary text-white rounded p-3 text-center fw-semibold">Column 3</div>
+                </div>
+              </div>
+            </div>
+            <p class="text-muted small mt-2 mb-0"><code>col-12 col-md-6 col-lg-4</code></p>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">3.2</span> .container / .row / .col-* in action</div>
+          <div class="ex-card-body">
+            <div class="container border rounded p-3">
+              <p class="demo-label mb-2">container</p>
+              <div class="row g-2">
+                <div class="col-sm"><div class="bg-info bg-opacity-25 border border-info rounded p-2 text-center small">col-sm</div></div>
+                <div class="col-sm"><div class="bg-info bg-opacity-25 border border-info rounded p-2 text-center small">col-sm</div></div>
+                <div class="col-sm"><div class="bg-info bg-opacity-25 border border-info rounded p-2 text-center small">col-sm</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 4. COLUMN LAYOUTS                             -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s4" class="ex-section">
+        <h2 class="ex-section-title"><span>04 /</span> Column Layouts &amp; Grid Classes</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">4.1</span> Sidebar (col-md-3) + Content (col-md-9)</div>
+          <div class="ex-card-body">
+            <div class="row g-3">
+              <div class="col-md-3">
+                <div class="bg-dark text-white rounded p-3 h-100">
+                  <strong>Sidebar</strong>
+                  <ul class="mt-2 ps-3 small">
+                    <li>Dashboard</li>
+                    <li>Profile</li>
+                    <li>Settings</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-md-9">
+                <div class="bg-light border rounded p-3 h-100">
+                  <strong>Main Content Area</strong>
+                  <p class="text-muted small mt-2 mb-0">This area takes up 9 out of 12 columns on medium+ screens.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">4.2</span> Four equal columns (col-sm-3)</div>
+          <div class="ex-card-body">
+            <div class="row g-2">
+              <div class="col-sm-3"><div class="bg-warning rounded p-3 text-center fw-bold">A</div></div>
+              <div class="col-sm-3"><div class="bg-warning rounded p-3 text-center fw-bold">B</div></div>
+              <div class="col-sm-3"><div class="bg-warning rounded p-3 text-center fw-bold">C</div></div>
+              <div class="col-sm-3"><div class="bg-warning rounded p-3 text-center fw-bold">D</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 5. ALIGNMENT AND REORDERING                   -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s5" class="ex-section">
+        <h2 class="ex-section-title"><span>05 /</span> Alignment &amp; Reordering</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">5.1</span> justify-content-center + align-items-center</div>
+          <div class="ex-card-body">
+            <div class="row justify-content-center align-items-center bg-light rounded" style="min-height:120px;">
+              <div class="col-auto">
+                <div class="bg-success text-white rounded px-4 py-2 fw-semibold">Centered Box</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">5.2</span> Column reordering with order-md-*</div>
+          <div class="ex-card-body">
+            <p class="text-muted small mb-2">On md+: Second box appears first.</p>
+            <div class="row g-2">
+              <div class="col-md-6 order-md-2">
+                <div class="bg-danger text-white rounded p-3 text-center">
+                  <span class="badge bg-light text-danger me-1">DOM 1st</span> Appears 2nd on md+
+                </div>
+              </div>
+              <div class="col-md-6 order-md-1">
+                <div class="bg-secondary text-white rounded p-3 text-center">
+                  <span class="badge bg-light text-dark me-1">DOM 2nd</span> Appears 1st on md+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 6. FLEXBOX UTILITIES                          -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s6" class="ex-section">
+        <h2 class="ex-section-title"><span>06 /</span> Responsive Flexbox Utilities</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">6.1</span> Responsive navbar: flex-column → flex-md-row</div>
+          <div class="ex-card-body">
+            <nav class="d-flex flex-column flex-md-row align-items-md-center gap-2 bg-dark text-white p-3 rounded">
+              <span class="fw-bold me-md-auto">Brand</span>
+              <a href="#" class="text-white text-decoration-none">Home</a>
+              <a href="#" class="text-white text-decoration-none">About</a>
+              <a href="#" class="text-white text-decoration-none">Contact</a>
+            </nav>
+            <p class="text-muted small mt-2 mb-0">Stacks vertically on mobile, horizontal on md+</p>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">6.2</span> justify-content-between + align-items-center in card</div>
+          <div class="ex-card-body">
+            <div class="card">
+              <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="mb-1">Product Name</h6>
+                  <small class="text-muted">In stock · Ships in 2 days</small>
+                </div>
+                <button class="btn btn-primary btn-sm">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 7. TYPOGRAPHY                                 -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s7" class="ex-section">
+        <h2 class="ex-section-title"><span>07 /</span> Typography</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">7.1</span> display-*, lead, text-muted, fw-bold</div>
+          <div class="ex-card-body">
+            <p class="display-1">display-1</p>
+            <p class="display-4">display-4</p>
+            <p class="display-6">display-6</p>
+            <p class="lead">This is a lead paragraph — slightly larger and lighter to introduce content.</p>
+            <p class="text-muted">This text is muted (secondary color).</p>
+            <p class="fw-bold">This text is bold using fw-bold.</p>
+            <p class="fw-light fst-italic">Light italic styling with fw-light + fst-italic.</p>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">7.2</span> text-uppercase / text-lowercase / text-capitalize</div>
+          <div class="ex-card-body">
+            <p class="text-uppercase fw-semibold">text-uppercase: this becomes uppercase</p>
+            <p class="text-lowercase">TEXT-LOWERCASE: THIS BECOMES lowercase</p>
+            <p class="text-capitalize">text-capitalize: every first letter is capitalized</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 8. FORMS                                      -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s8" class="ex-section">
+        <h2 class="ex-section-title"><span>08 /</span> Forms</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">8.1</span> Registration form with form-control, form-check, input-group</div>
+          <div class="ex-card-body">
+            <div class="row g-3" style="max-width:520px">
+              <div class="col-md-6">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-control" placeholder="John">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-control" placeholder="Doe">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Email</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input type="email" class="form-control" placeholder="email@example.com">
+                </div>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input type="password" class="form-control" placeholder="••••••••">
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="terms">
+                  <label class="form-check-label" for="terms">I agree to the terms &amp; conditions</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary w-100">Register</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">8.2</span> Login form with form-floating</div>
+          <div class="ex-card-body" style="max-width:380px">
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="loginEmail" placeholder="name@example.com">
+              <label for="loginEmail">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+              <label for="loginPassword">Password</label>
+            </div>
+            <button class="btn btn-dark w-100">Sign In</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 9. BUTTONS                                    -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s9" class="ex-section">
+        <h2 class="ex-section-title"><span>09 /</span> Buttons</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">9.1</span> All contextual button classes</div>
+          <div class="ex-card-body">
+            <p class="demo-label">Solid</p>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <button class="btn btn-primary">Primary</button>
+              <button class="btn btn-secondary">Secondary</button>
+              <button class="btn btn-success">Success</button>
+              <button class="btn btn-danger">Danger</button>
+              <button class="btn btn-warning">Warning</button>
+              <button class="btn btn-info">Info</button>
+              <button class="btn btn-light">Light</button>
+              <button class="btn btn-dark">Dark</button>
+            </div>
+            <p class="demo-label">Outline</p>
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-outline-primary">Primary</button>
+              <button class="btn btn-outline-secondary">Secondary</button>
+              <button class="btn btn-outline-success">Success</button>
+              <button class="btn btn-outline-danger">Danger</button>
+              <button class="btn btn-outline-warning">Warning</button>
+              <button class="btn btn-outline-info">Info</button>
+              <button class="btn btn-outline-dark">Dark</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">9.2</span> Button groups &amp; toggle checkboxes</div>
+          <div class="ex-card-body">
+            <p class="demo-label">btn-group</p>
+            <div class="btn-group mb-3">
+              <button class="btn btn-outline-primary">Left</button>
+              <button class="btn btn-outline-primary">Centre</button>
+              <button class="btn btn-outline-primary">Right</button>
+            </div>
+            <p class="demo-label">Toggle buttons (checkbox)</p>
+            <div class="btn-group" role="group">
+              <input type="checkbox" class="btn-check" id="tog1" autocomplete="off">
+              <label class="btn btn-outline-success" for="tog1">Bold</label>
+              <input type="checkbox" class="btn-check" id="tog2" autocomplete="off">
+              <label class="btn btn-outline-success" for="tog2">Italic</label>
+              <input type="checkbox" class="btn-check" id="tog3" autocomplete="off">
+              <label class="btn btn-outline-success" for="tog3">Underline</label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 10. NAVBARS                                   -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s10" class="ex-section">
+        <h2 class="ex-section-title"><span>10 /</span> Navbars &amp; Navigation</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">10.1</span> Responsive navbar with logo, links, search</div>
+          <div class="ex-card-body p-0">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+              <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                <i class="bi bi-bootstrap-fill text-primary fs-5"></i> BrandLogo
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navDemo">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navDemo">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+                </ul>
+                <form class="d-flex">
+                  <input class="form-control me-2" type="search" placeholder="Search…">
+                  <button class="btn btn-outline-light" type="submit">Go</button>
+                </form>
+              </div>
+            </nav>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">10.2</span> nav-tabs &amp; nav-pills</div>
+          <div class="ex-card-body">
+            <p class="demo-label">nav-tabs</p>
+            <ul class="nav nav-tabs mb-3">
+              <li class="nav-item"><a class="nav-link active" href="#">Tab One</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Tab Two</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Tab Three</a></li>
+            </ul>
+            <p class="demo-label">nav-pills</p>
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a class="nav-link active" href="#">Pill One</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Pill Two</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Pill Three</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 11. CARDS                                     -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s11" class="ex-section">
+        <h2 class="ex-section-title"><span>11 /</span> Cards &amp; Media Objects</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">11.1</span> Profile card</div>
+          <div class="ex-card-body">
+            <div class="card" style="max-width:280px">
+              <div class="bg-primary" style="height:90px;border-radius:.375rem .375rem 0 0"></div>
+              <img src="https://i.pravatar.cc/80?img=47"
+                   class="rounded-circle border border-3 border-white mx-auto mt-n4 d-block"
+                   alt="Avatar" style="width:80px;height:80px;object-fit:cover;margin-top:-40px!important">
+              <div class="card-body text-center">
+                <h5 class="card-title mb-1">Jane Doe</h5>
+                <p class="text-muted small mb-3">UX Designer · Chennai</p>
+                <button class="btn btn-primary btn-sm">Follow</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">11.2</span> Media object (image left of content)</div>
+          <div class="ex-card-body">
+            <div class="d-flex gap-3 align-items-start">
+              <img src="https://i.pravatar.cc/60?img=12" class="rounded" width="60" height="60" alt="Media">
+              <div>
+                <h6 class="mb-1">Alex Martin</h6>
+                <p class="text-muted small mb-0">This is a media object layout — an image aligned to the left with content sitting neatly beside it. Perfect for comment threads or testimonials.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 12. SPACING UTILITIES                         -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s12" class="ex-section">
+        <h2 class="ex-section-title"><span>12 /</span> Spacing Utilities</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">12.1</span> m-3, mt-4, p-2, py-5</div>
+          <div class="ex-card-body">
+            <div class="bg-primary bg-opacity-10 border border-primary rounded m-3 p-2 text-center small">
+              <code>m-3 p-2</code>
+            </div>
+            <div class="bg-success bg-opacity-10 border border-success rounded mt-4 py-5 text-center small">
+              <code>mt-4 py-5</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">12.2</span> Pricing section with spacing</div>
+          <div class="ex-card-body">
+            <div class="row g-4 justify-content-center">
+              <div class="col-sm-4">
+                <div class="card pricing-card text-center py-4 px-3">
+                  <div class="card-body">
+                    <h5 class="fw-bold mb-2">Starter</h5>
+                    <p class="display-6 fw-bold mb-3">₹0<small class="fs-6 fw-normal text-muted">/mo</small></p>
+                    <ul class="list-unstyled mb-4 small text-muted">
+                      <li class="mb-1">5 Projects</li>
+                      <li class="mb-1">1 GB Storage</li>
+                    </ul>
+                    <button class="btn btn-outline-primary w-100">Get Started</button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="card pricing-card text-center py-4 px-3 border-primary border-2">
+                  <div class="card-body">
+                    <span class="badge bg-primary mb-2">Popular</span>
+                    <h5 class="fw-bold mb-2">Pro</h5>
+                    <p class="display-6 fw-bold mb-3">₹499<small class="fs-6 fw-normal text-muted">/mo</small></p>
+                    <ul class="list-unstyled mb-4 small text-muted">
+                      <li class="mb-1">Unlimited Projects</li>
+                      <li class="mb-1">50 GB Storage</li>
+                    </ul>
+                    <button class="btn btn-primary w-100">Upgrade</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 13. COLORS AND BACKGROUNDS                    -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s13" class="ex-section">
+        <h2 class="ex-section-title"><span>13 /</span> Colors &amp; Backgrounds</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">13.1</span> Dashboard with bg-* and text-* classes</div>
+          <div class="ex-card-body">
+            <div class="row g-2">
+              <div class="col-6 col-md-3"><div class="bg-primary text-white rounded p-3 text-center small fw-semibold">bg-primary</div></div>
+              <div class="col-6 col-md-3"><div class="bg-success text-white rounded p-3 text-center small fw-semibold">bg-success</div></div>
+              <div class="col-6 col-md-3"><div class="bg-warning text-dark rounded p-3 text-center small fw-semibold">bg-warning</div></div>
+              <div class="col-6 col-md-3"><div class="bg-danger text-white rounded p-3 text-center small fw-semibold">bg-danger</div></div>
+              <div class="col-6 col-md-3"><div class="bg-info text-dark rounded p-3 text-center small fw-semibold">bg-info</div></div>
+              <div class="col-6 col-md-3"><div class="bg-secondary text-white rounded p-3 text-center small fw-semibold">bg-secondary</div></div>
+              <div class="col-6 col-md-3"><div class="bg-light text-dark border rounded p-3 text-center small fw-semibold">bg-light</div></div>
+              <div class="col-6 col-md-3"><div class="bg-dark text-white rounded p-3 text-center small fw-semibold">bg-dark</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">13.2</span> bg-gradient + bg-dark + white text</div>
+          <div class="ex-card-body">
+            <div class="bg-dark bg-gradient text-white rounded p-4 text-center">
+              <h5 class="fw-bold mb-1">Dark Gradient Background</h5>
+              <p class="text-white-50 mb-0 small">Using <code class="text-white">.bg-dark.bg-gradient</code> with white text utilities</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 14. DISPLAY AND VISIBILITY                    -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s14" class="ex-section">
+        <h2 class="ex-section-title"><span>14 /</span> Display &amp; Visibility</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">14.1</span> d-none / d-md-block / d-lg-flex</div>
+          <div class="ex-card-body">
+            <div class="d-none d-md-block bg-success text-white rounded p-2 mb-2 text-center small">
+              <i class="bi bi-eye me-1"></i> Visible on md+ only (d-none d-md-block)
+            </div>
+            <div class="d-none d-lg-flex align-items-center gap-2 bg-primary text-white rounded p-2 mb-2 text-center small">
+              <i class="bi bi-display"></i> Visible on lg+ only (d-none d-lg-flex)
+            </div>
+            <div class="d-md-none bg-danger text-white rounded p-2 text-center small">
+              <i class="bi bi-phone me-1"></i> Visible on mobile only (d-md-none)
+            </div>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">14.2</span> Responsive sidebar (tablet+)</div>
+          <div class="ex-card-body">
+            <div class="row g-3">
+              <div class="col-12 col-md-3 d-none d-md-block custom-sidebar-demo">
+                <p class="fw-semibold mb-2 small">Sidebar</p>
+                <small class="text-muted">Only visible on tablets and above</small>
+              </div>
+              <div class="col-12 col-md-9">
+                <div class="bg-light border rounded p-3">
+                  <p class="mb-0 small">Main content. Resize the window below 768px and the sidebar will disappear.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 15. BORDERS, SHADOWS, ROUNDED CORNERS         -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s15" class="ex-section">
+        <h2 class="ex-section-title"><span>15 /</span> Borders, Shadows &amp; Rounded Corners</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">15.1</span> border utilities + rounded-circle on image</div>
+          <div class="ex-card-body d-flex flex-wrap gap-4 align-items-center">
+            <img src="https://i.pravatar.cc/80?img=5" class="border border-primary border-3 rounded-circle" width="80" height="80" alt="circle">
+            <img src="https://i.pravatar.cc/80?img=6" class="border border-danger border-2 rounded" width="80" height="80" alt="rounded">
+            <img src="https://i.pravatar.cc/80?img=7" class="border border-success border-3 rounded-pill" width="100" height="80" alt="pill" style="object-fit:cover">
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">15.2</span> shadow / shadow-lg / rounded-pill in a card</div>
+          <div class="ex-card-body d-flex flex-wrap gap-3">
+            <div class="card shadow rounded p-3 text-center" style="width:140px">
+              <small>shadow</small>
+            </div>
+            <div class="card shadow-lg rounded-4 p-3 text-center" style="width:140px">
+              <small>shadow-lg + rounded-4</small>
+            </div>
+            <div class="card shadow rounded-pill p-3 px-4 text-center" style="width:160px">
+              <small>rounded-pill</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 16. POSITIONING UTILITIES                     -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s16" class="ex-section">
+        <h2 class="ex-section-title"><span>16 /</span> Positioning Utilities</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">16.1</span> Fixed footer (simulated inline)</div>
+          <div class="ex-card-body">
+            <div class="position-relative bg-light rounded" style="height:100px">
+              <div class="position-absolute bottom-0 start-0 end-0 bg-dark text-white text-center py-2 small rounded-bottom">
+                <i class="bi bi-pin-map me-1"></i> Fixed Footer (position-fixed bottom-0 in real use)
+              </div>
+            </div>
+            <p class="text-muted small mt-2 mb-0">In production: add <code>position-fixed bottom-0 w-100</code> to a real footer element.</p>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">16.2</span> position-relative + position-absolute badge overlay</div>
+          <div class="ex-card-body">
+            <div class="overlay-wrap d-inline-block">
+              <img src="https://i.pravatar.cc/100?img=20" class="rounded" width="100" height="100" alt="overlay">
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                9+<span class="visually-hidden">unread messages</span>
+              </span>
+            </div>
+            <p class="text-muted small mt-3 mb-0">Badge absolutely positioned over the image corner.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 17. BOOTSTRAP ICONS                           -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s17" class="ex-section">
+        <h2 class="ex-section-title"><span>17 /</span> Icons with Bootstrap Icons</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">17.1</span> Social media icons in footer</div>
+          <div class="ex-card-body">
+            <footer class="bg-dark text-white rounded p-4">
+              <div class="d-flex justify-content-center gap-4 fs-4">
+                <a href="#" class="text-white"><i class="bi bi-twitter-x"></i></a>
+                <a href="#" class="text-white"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="text-white"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="text-white"><i class="bi bi-github"></i></a>
+                <a href="#" class="text-white"><i class="bi bi-youtube"></i></a>
+              </div>
+              <p class="text-center text-white-50 mt-3 mb-0 small">© 2025 Bootstrap Exercises</p>
+            </footer>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">17.2</span> Icon-only buttons</div>
+          <div class="ex-card-body d-flex flex-wrap gap-2">
+            <button class="btn btn-outline-primary" title="Home"><i class="bi bi-house-fill fs-5"></i></button>
+            <button class="btn btn-outline-success" title="Add"><i class="bi bi-plus-circle-fill fs-5"></i></button>
+            <button class="btn btn-outline-danger" title="Delete"><i class="bi bi-trash3-fill fs-5"></i></button>
+            <button class="btn btn-outline-warning" title="Edit"><i class="bi bi-pencil-square fs-5"></i></button>
+            <button class="btn btn-outline-info" title="Info"><i class="bi bi-info-circle-fill fs-5"></i></button>
+            <button class="btn btn-outline-dark" title="Settings"><i class="bi bi-gear-fill fs-5"></i></button>
+            <button class="btn btn-outline-secondary" title="Search"><i class="bi bi-search fs-5"></i></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 18. JS PLUGINS                                -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s18" class="ex-section">
+        <h2 class="ex-section-title"><span>18 /</span> Bootstrap 5 JavaScript Plugins</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">18.1</span> Modal popup</div>
+          <div class="ex-card-body">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#demoModal">
+              <i class="bi bi-window me-2"></i>Launch Modal
+            </button>
+
+            <div class="modal fade" id="demoModal" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="bi bi-check-circle me-2"></i>Exercise 18.1 Modal</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>This modal was triggered by the button using <code>data-bs-toggle="modal"</code> and <code>data-bs-target</code>.</p>
+                    <p class="mb-0 text-muted small">No custom JavaScript was required — Bootstrap handles it all!</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary btn-sm">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">18.2</span> Accordion (collapsible)</div>
+          <div class="ex-card-body">
+            <div class="accordion" id="accordionDemo">
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#acc1">
+                    What is Bootstrap 5?
+                  </button>
+                </h2>
+                <div id="acc1" class="accordion-collapse collapse show" data-bs-parent="#accordionDemo">
+                  <div class="accordion-body small">
+                    Bootstrap 5 is a free, open-source CSS framework directed at responsive, mobile-first front-end web development.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc2">
+                    Why use Bootstrap?
+                  </button>
+                </h2>
+                <div id="acc2" class="accordion-collapse collapse" data-bs-parent="#accordionDemo">
+                  <div class="accordion-body small">
+                    Bootstrap provides pre-built components, a powerful grid system, utility classes, and JavaScript plugins that dramatically speed up development.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc3">
+                    Bootstrap 5 vs Bootstrap 4?
+                  </button>
+                </h2>
+                <div id="acc3" class="accordion-collapse collapse" data-bs-parent="#accordionDemo">
+                  <div class="accordion-body small">
+                    Bootstrap 5 dropped jQuery dependency, added RTL support, improved utility classes, updated the grid, and introduced new components like offcanvas and floating labels.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════ -->
+      <!-- 19. CUSTOMIZATION WITH SASS                   -->
+      <!-- ══════════════════════════════════════════════ -->
+      <section id="s19" class="ex-section">
+        <h2 class="ex-section-title"><span>19 /</span> Customization with Sass</h2>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">19.1</span> Set up Bootstrap 5 with Sass via npm</div>
+          <div class="ex-card-body">
+            <pre style="background:var(--code-bg);color:#cdd6f4;padding:1rem;border-radius:6px;font-size:.82rem;overflow-x:auto"><code>npm init -y
+npm install bootstrap sass
+
+# Project structure
+my-project/
+├── scss/
+│   └── custom.scss     ← your Sass entry point
+├── node_modules/
+└── dist/               ← compiled output
+
+# custom.scss
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+# Compile command (add to package.json scripts):
+# "build-css": "sass scss/custom.scss dist/css/custom.css"
+
+npm run build-css</code></pre>
+          </div>
+        </div>
+
+        <div class="ex-card">
+          <div class="ex-card-header"><span class="num">19.2</span> Override $primary color &amp; $border-radius in _variables.scss</div>
+          <div class="ex-card-body">
+            <pre style="background:var(--code-bg);color:#cdd6f4;padding:1rem;border-radius:6px;font-size:.82rem;overflow-x:auto"><code>// scss/custom.scss
+
+// 1. Override Bootstrap default variables BEFORE importing Bootstrap
+$primary:        #e84d1c;      // your brand orange-red
+$secondary:      #1c6fe8;      // your brand blue
+$border-radius:  0.75rem;      // more rounded corners
+$font-family-base: 'DM Sans', sans-serif;
+
+// 2. Required Bootstrap imports
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+
+// 3. Optional: import only what you need
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/buttons";
+@import "../node_modules/bootstrap/scss/utilities";
+
+// 4. Or import everything
+// @import "../node_modules/bootstrap/scss/bootstrap";</code></pre>
+            <div class="alert alert-warning mt-3 mb-0 small">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <strong>Key rule:</strong> Always set your override variables <em>before</em> <code>@import "bootstrap/scss/variables"</code> so Bootstrap picks them up.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /col main -->
+  </div><!-- /row -->
+</div><!-- /container -->
+
+<!-- ════════════════════ SITE FOOTER (Ex 17.1 & 16.1) ════════════════════ -->
+<footer class="site-footer">
+  <div class="container-lg d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+    <span><i class="bi bi-bootstrap-fill me-2 text-primary"></i>Bootstrap 5 · All Exercises</span>
+    <div class="d-flex gap-3">
+      <a href="#s1" class="text-white-50 text-decoration-none small">Back to top ↑</a>
+    </div>
+    <div class="d-flex gap-3 fs-5">
+      <a href="#" class="text-white-50"><i class="bi bi-twitter-x"></i></a>
+      <a href="#" class="text-white-50"><i class="bi bi-github"></i></a>
+      <a href="#" class="text-white-50"><i class="bi bi-linkedin"></i></a>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap 5 JS Bundle (Exercise 2.2) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
