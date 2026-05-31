@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicConnect – Community Event Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─── CSS Variables ─────────────────────────────────────── */
+    :root {
+      --bg: #0d0f14;
+      --surface: #161922;
+      --surface2: #1e2330;
+      --border: #2a3045;
+      --accent: #e8c547;
+      --accent2: #4fd1c5;
+      --text: #e8eaf0;
+      --muted: #7a8299;
+      --danger: #f56565;
+      --success: #68d391;
+      --radius: 12px;
+      --shadow: 0 4px 30px rgba(0,0,0,0.4);
+    }
+
+    /* ─── Reset & Base ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ─── Typography ────────────────────────────────────────── */
+    h1, h2, h3 { font-family: 'Playfair Display', serif; line-height: 1.2; }
+    h1 { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 900; }
+    h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); color: var(--accent); margin-bottom: 1.2rem; }
+    h3 { font-size: 1.2rem; color: var(--accent2); margin-bottom: .6rem; }
+
+    /* ─── Layout Helpers ────────────────────────────────────── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+    section { padding: 5rem 0; border-bottom: 1px solid var(--border); }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+    /* ─── Ex 1 · HERO ────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, #0d0f14 0%, #1a1f2e 60%, #111827 100%);
+      padding: 3rem 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(232,197,71,.08) 0%, transparent 70%);
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(232,197,71,.15);
+      border: 1px solid rgba(232,197,71,.35);
+      color: var(--accent);
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .35rem 1rem;
+      border-radius: 99px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-subtitle { color: var(--muted); font-size: 1.15rem; max-width: 560px; margin: 1rem 0 2.5rem; }
+
+    /* ─── Ex 2 · NAVIGATION ─────────────────────────────────── */
+    /* Navigation */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,15,20,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+    nav .container { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .nav-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.3rem; color: var(--accent); text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: .95rem; font-weight: 500;
+      transition: color .2s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 2px;
+      background: var(--accent); transform: scaleX(0); transition: transform .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-help {
+      color: var(--accent2); font-size: .85rem; font-weight: 500;
+      text-decoration: none; border: 1px solid rgba(79,209,197,.3);
+      padding: .35rem .9rem; border-radius: 99px; transition: background .2s;
+    }
+    .nav-help:hover { background: rgba(79,209,197,.1); }
+
+    /* ─── Ex 3 · WELCOME BANNER ─────────────────────────────── */
+    /* Welcome Banner */
+    #welcomeBanner {
+      background: linear-gradient(135deg, #1a3a6e 0%, #1e4080 100%);
+      border: 1px solid rgba(79,130,255,.35);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      margin: 2.5rem 0;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    #welcomeBanner p { font-size: 1.05rem; }
+    .highlight { background: rgba(232,197,71,.18); padding: .1em .4em; border-radius: 4px; color: var(--accent); font-weight: 600; }
+
+    /* ─── Ex 4 · IMAGE GALLERY TABLE ────────────────────────── */
+    /* Gallery Table */
+    .gallery-table { width: 100%; border-collapse: collapse; }
+    .gallery-table td {
+      padding: .75rem;
+      vertical-align: top;
+      width: 33.33%;
+    }
+    .gallery-table figure { position: relative; overflow: hidden; border-radius: 10px; cursor: zoom-in; }
+    .gallery-table img {
+      width: 100%; height: 200px; object-fit: cover; display: block;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      transition: transform .35s;
+    }
+    .gallery-table img:hover { transform: scale(1.04); }
+    .gallery-table figcaption {
+      background: rgba(13,15,20,.85);
+      color: var(--accent);
+      font-size: .8rem; font-weight: 600;
+      text-align: center;
+      padding: .4rem;
+      border-radius: 0 0 10px 10px;
+    }
+    /* lightbox */
+    #lightbox {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,.85); align-items: center; justify-content: center;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 80vw; max-height: 80vh; border-radius: var(--radius); box-shadow: var(--shadow); }
+    #lightbox-close {
+      position: absolute; top: 1.5rem; right: 2rem;
+      font-size: 2rem; color: var(--text); cursor: pointer; background: none; border: none;
+    }
+
+    /* ─── Ex 5 · REGISTRATION FORM ──────────────────────────── */
+    /* Form Styles */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .form-grid .full { grid-column: 1 / -1; }
+    .field { display: flex; flex-direction: column; gap: .45rem; }
+    .field label { font-size: .85rem; font-weight: 600; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; }
+    .field input, .field select, .field textarea {
+      background: var(--surface2); border: 1px solid var(--border);
+      color: var(--text); border-radius: 8px; padding: .7rem 1rem;
+      font-family: inherit; font-size: .95rem;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--accent); box-shadow: 0 0 0 3px rgba(232,197,71,.15);
+    }
+    .field input.error { border-color: var(--danger); }
+    .field textarea { resize: vertical; min-height: 120px; }
+    .field select option { background: var(--surface2); }
+    .char-count { font-size: .78rem; color: var(--muted); text-align: right; margin-top: .2rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--accent); color: #0d0f14;
+      font-family: inherit; font-size: .95rem; font-weight: 700;
+      padding: .85rem 2rem; border: none; border-radius: 8px;
+      cursor: pointer; transition: opacity .2s, transform .15s;
+    }
+    .btn:hover { opacity: .9; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn-outline {
+      background: transparent; color: var(--muted); border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent2); color: var(--accent2); background: rgba(79,209,197,.06); }
+    output#confirmationMsg {
+      display: block; margin-top: 1.2rem;
+      background: rgba(104,211,145,.1); border: 1px solid rgba(104,211,145,.3);
+      color: var(--success); border-radius: 8px; padding: 1rem 1.25rem;
+      font-weight: 500; font-size: .95rem;
+    }
+
+    /* ─── Ex 6 · FEEDBACK ───────────────────────────────────── */
+    .event-fee-display {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: .85rem 1rem;
+      font-weight: 600; color: var(--accent2); min-height: 48px;
+      display: flex; align-items: center;
+    }
+    .phone-status { font-size: .78rem; margin-top: .3rem; font-weight: 500; }
+    .phone-status.ok { color: var(--success); }
+    .phone-status.err { color: var(--danger); }
+
+    /* ─── Ex 7 · VIDEO ──────────────────────────────────────── */
+    .video-wrapper {
+      position: relative; border-radius: var(--radius); overflow: hidden;
+      background: #000; border: 1px solid var(--border);
+    }
+    .video-wrapper video { width: 100%; display: block; max-height: 420px; object-fit: cover; }
+    #videoStatus {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,.75));
+      padding: 1.5rem 1rem .75rem;
+      color: var(--success); font-weight: 600; font-size: .9rem;
+      opacity: 0; transition: opacity .4s;
+    }
+
+    /* ─── Ex 8 · PREFERENCES ────────────────────────────────── */
+    .pref-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .pref-saved { color: var(--success); font-size: .88rem; font-weight: 500; }
+
+    /* ─── Ex 9 · GEOLOCATION ────────────────────────────────── */
+    #geoResult {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.2rem 1.5rem; margin-top: 1.2rem;
+      font-size: .95rem; min-height: 60px;
+    }
+
+    /* ─── Ex 10 · DEBUG ─────────────────────────────────────── */
+    .console-box {
+      background: #0a0c10; border: 1px solid var(--border);
+      border-radius: 8px; padding: 1rem 1.25rem;
+      font-family: 'Courier New', monospace; font-size: .82rem;
+      color: #a8b5c9; max-height: 200px; overflow-y: auto;
+    }
+    .console-box .log-line { padding: .15rem 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+    .console-box .log-line.warn { color: var(--accent); }
+    .console-box .log-line.err  { color: var(--danger); }
+    .console-box .log-line.info { color: var(--accent2); }
+    .debug-buttons { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1rem; }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+    footer strong { color: var(--accent); }
+
+    /* ─── Scrollbar ──────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    /* ─── Animations ─────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .65s ease both; }
+    .delay-1 { animation-delay: .15s; }
+    .delay-2 { animation-delay: .3s; }
+    .delay-3 { animation-delay: .45s; }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+
+    /* Section label */
+    .ex-label {
+      display: inline-block;
+      background: rgba(79,209,197,.1);
+      border: 1px solid rgba(79,209,197,.25);
+      color: var(--accent2);
+      font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; padding: .25rem .75rem;
+      border-radius: 99px; margin-bottom: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     EXERCISE 2 · Navigation
+════════════════════════════════════════════════════════════ -->
+<!-- Navigation -->
+<nav>
+  <div class="container">
+    <a href="#home" class="nav-logo">CivicConnect</a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#register">Register</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <!-- External help link opens in new tab -->
+    <a href="help.html" target="_blank" class="nav-help">Help ↗</a>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     EXERCISE 1 · HTML5 Base Template / Hero
+════════════════════════════════════════════════════════════ -->
+<!-- Main -->
+<main>
+
+  <!-- Home Section -->
+  <section id="home">
+    <header>
+      <div class="container">
+        <div class="hero-tag">Your City. Your Events.</div>
+        <h1 class="fade-up">Community<br>Event Portal</h1>
+        <p class="hero-subtitle fade-up delay-1">
+          Discover, register, and celebrate local events — all in one place.
+          Built for residents, powered by your city council.
+        </p>
+
+        <!-- ══════════════════════════════════════════════════
+             EXERCISE 3 · Welcome Banner with ID, Class & Inline Style
+        ═══════════════════════════════════════════════════ -->
+        <!-- Welcome Banner -->
+        <div id="welcomeBanner" class="fade-up delay-2">
+          <p>
+            👋 Welcome back, <strong class="highlight">Resident</strong>! You have
+            <span style="color: #f56565; font-weight: 700;">3 upcoming events</span> registered.
+          </p>
+          <span class="highlight" style="font-size:.85rem;">Member since 2023</span>
+        </div>
+
+        <div class="fade-up delay-3" style="display:flex;gap:1rem;flex-wrap:wrap;">
+          <a href="#events" class="btn">Browse Events</a>
+          <a href="#register" class="btn btn-outline">Register Now</a>
+        </div>
+      </div>
+    </header>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       EXERCISE 4 · Image Gallery Table
+  ═══════════════════════════════════════════════════════ -->
+  <!-- Gallery Section -->
+  <section id="gallery">
+    <div class="container">
+      <span class="ex-label">Exercise 4</span>
+      <h2>Past Event Gallery</h2>
+      <p style="color:var(--muted);margin-bottom:2rem;">
+        A look back at memorable community moments. <em>Double-click any photo to enlarge.</em>
+      </p>
+
+      <!-- Image Gallery Table (2 rows × 3 cols) -->
+      <table class="gallery-table">
+        <tr>
+          <td>
+            <figure>
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=300&fit=crop"
+                   alt="Summer Music Fest crowd" title="Summer Music Festival 2023"
+                   class="event-img" ondblclick="openLightbox(this)">
+              <figcaption>🎵 Summer Music Festival</figcaption>
+            </figure>
+          </td>
+          <td>
+            <figure>
+              <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=500&h=300&fit=crop"
+                   alt="Community Food Fair stalls" title="Food & Culture Fair 2023"
+                   class="event-img" ondblclick="openLightbox(this)">
+              <figcaption>🍜 Food & Culture Fair</figcaption>
+            </figure>
+          </td>
+          <td>
+            <figure>
+              <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&h=300&fit=crop"
+                   alt="City Marathon participants" title="Annual City Marathon 2023"
+                   class="event-img" ondblclick="openLightbox(this)">
+              <figcaption>🏃 City Marathon</figcaption>
+            </figure>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <figure>
+              <img src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=500&h=300&fit=crop"
+                   alt="Tech Workshop session" title="Digital Skills Workshop 2023"
+                   class="event-img" ondblclick="openLightbox(this)">
+              <figcaption>💻 Digital Skills Workshop</figcaption>
+            </figure>
+          </td>
+          <td>
+            <figure>
+              <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&h=300&fit=crop"
+                   alt="Community Garden planting" title="Green Thumb Garden Day"
+                   class="event-img" ondblclick="openLightbox(this)">
+              <figcaption>🌱 Garden Day</figcaption>
+            </figure>
+          </td>
+          <td>
+            <figure>
+              <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&h=300&fit=crop"
+                   alt="Youth Art Exhibition pieces" title="Youth Art Exhibition 2023"
+                   class="event-img" ondblclick="openLightbox(this)">
+              <figcaption>🎨 Youth Art Exhibition</figcaption>
+            </figure>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- Lightbox (Ex 4 – ondblclick enlarge) -->
+  <div id="lightbox" role="dialog" aria-modal="true">
+    <button id="lightbox-close" onclick="closeLightbox()" aria-label="Close">✕</button>
+    <img id="lightbox-img" src="" alt="Enlarged event photo">
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       EVENTS Section (anchor target for nav)
+  ═══════════════════════════════════════════════════════ -->
+  <!-- Events Section -->
+  <section id="events">
+    <div class="container">
+      <h2>Upcoming Events</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;">
+        <div class="card">
+          <h3>🎭 Theatre Night</h3>
+          <p style="color:var(--muted);font-size:.9rem;margin-bottom:.5rem;">June 14, 2025 · City Hall</p>
+          <p>An evening of classic performances by the local drama troupe.</p>
+        </div>
+        <div class="card">
+          <h3>🌳 Park Clean-Up Drive</h3>
+          <p style="color:var(--muted);font-size:.9rem;margin-bottom:.5rem;">June 21, 2025 · Riverside Park</p>
+          <p>Join volunteers to restore our parks. Gloves and bags provided.</p>
+        </div>
+        <div class="card">
+          <h3>🏋️ Wellness Fair</h3>
+          <p style="color:var(--muted);font-size:.9rem;margin-bottom:.5rem;">July 5, 2025 · Community Centre</p>
+          <p>Free health check-ups, yoga sessions, and nutrition talks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       EXERCISE 5 · Event Registration Form
+  ═══════════════════════════════════════════════════════ -->
+  <!-- Register Section -->
+  <section id="register">
+    <div class="container" style="max-width:780px;">
+      <span class="ex-label">Exercise 5</span>
+      <h2>Event Registration</h2>
+      <p style="color:var(--muted);margin-bottom:2rem;">Fill in the form below to secure your spot.</p>
+
+      <div class="card">
+        <div class="form-grid">
+          <!-- Name -->
+          <div class="field">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName"
+                   placeholder="e.g. Priya Sharma" required autofocus>
+          </div>
+          <!-- Email -->
+          <div class="field">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email"
+                   placeholder="you@example.com" required>
+          </div>
+          <!-- Date -->
+          <div class="field">
+            <label for="eventDate">Preferred Date</label>
+            <input type="date" id="eventDate" name="eventDate" required>
+          </div>
+          <!-- Event Type (also used for Ex 6 & Ex 8) -->
+          <div class="field">
+            <label for="eventType">Event Type</label>
+            <select id="eventType" name="eventType" onchange="handleEventChange(this)" required>
+              <option value="">— Select an event —</option>
+              <option value="theatre" data-fee="₹200">Theatre Night (₹200)</option>
+              <option value="cleanup" data-fee="Free">Park Clean-Up (Free)</option>
+              <option value="wellness" data-fee="₹150">Wellness Fair (₹150)</option>
+              <option value="marathon" data-fee="₹500">City Marathon (₹500)</option>
+            </select>
+          </div>
+          <!-- Message -->
+          <div class="field full">
+            <label for="message">Message / Special Requirements</label>
+            <textarea id="message" name="message"
+                      placeholder="Any dietary needs, accessibility requests, or questions…"
+                      oninput="countChars(this)"></textarea>
+            <div class="char-count" id="charCount">0 / 300 characters</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;align-items:center;">
+          <button class="btn" onclick="submitRegistration(event)">Submit Registration</button>
+          <button class="btn btn-outline" type="button" onclick="resetForm()">Clear Form</button>
+        </div>
+
+        <!-- Ex 5: <output> for confirmation -->
+        <output id="confirmationMsg" for="fullName email eventType" style="display:none;"></output>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       EXERCISE 6 · Event Feedback & Event Handling
+  ═══════════════════════════════════════════════════════ -->
+  <!-- Feedback Section -->
+  <section id="feedback">
+    <div class="container" style="max-width:780px;">
+      <span class="ex-label">Exercise 6</span>
+      <h2>Event Feedback</h2>
+      <p style="color:var(--muted);margin-bottom:2rem;">Share your experience. All inputs are handled with real-time JS events.</p>
+
+      <div class="card">
+        <div class="form-grid">
+          <!-- Phone (onblur validation) -->
+          <div class="field">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="10-digit number"
+                   onblur="validatePhone(this)">
+            <div id="phoneStatus" class="phone-status"></div>
+          </div>
+
+          <!-- Dropdown → show fee (onchange) -->
+          <div class="field">
+            <label for="feedbackEvent">Which event did you attend?</label>
+            <select id="feedbackEvent" onchange="showFee(this)">
+              <option value="">— Select —</option>
+              <option value="theatre" data-fee="₹200">Theatre Night</option>
+              <option value="cleanup" data-fee="Free">Park Clean-Up</option>
+              <option value="wellness" data-fee="₹150">Wellness Fair</option>
+              <option value="marathon" data-fee="₹500">City Marathon</option>
+            </select>
+            <div class="event-fee-display" id="feeDisplay" style="margin-top:.6rem;">
+              Select an event to see the registration fee.
+            </div>
+          </div>
+
+          <!-- Feedback textarea with keypress counter (onkeyup) -->
+          <div class="field full">
+            <label for="feedbackText">Your Feedback</label>
+            <textarea id="feedbackText" placeholder="Tell us what you thought…"
+                      onkeyup="liveCharCount(this)"></textarea>
+            <div class="char-count" id="liveCount">0 characters typed</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;">
+          <!-- onclick confirmation -->
+          <button class="btn" onclick="submitFeedback()">Submit Feedback</button>
+          <!-- ondblclick demo -->
+          <button class="btn btn-outline" ondblclick="enlargeDemoImg()">Double-click to Enlarge Demo Image</button>
+        </div>
+
+        <!-- Demo image for ondblclick Ex 6 -->
+        <div style="margin-top:1.2rem;">
+          <img id="demoImg"
+               src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=320&h=180&fit=crop"
+               alt="Demo event image"
+               style="border-radius:8px;border:1px solid var(--border);display:block;transition:width .3s,height .3s;"
+               ondblclick="openLightbox(this)"
+               title="Double-click to enlarge">
+          <p style="color:var(--muted);font-size:.78rem;margin-top:.4rem;">↑ Double-click the image to enlarge it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       EXERCISE 7 · Video Invite with Media Events
+  ═══════════════════════════════════════════════════════ -->
+  <!-- Video Section -->
+  <section id="video">
+    <div class="container" style="max-width:780px;">
+      <span class="ex-label">Exercise 7</span>
+      <h2>Event Promo Video</h2>
+      <p style="color:var(--muted);margin-bottom:1.5rem;">
+        Watch our latest community promo. The player fires <code style="color:var(--accent2);">oncanplay</code> when ready.
+      </p>
+
+      <div class="video-wrapper">
+        <!-- Using a freely-available public domain sample video -->
+        <video id="promoVideo" controls preload="auto"
+               oncanplay="videoReady()"
+               onplay="logDebug('▶ Video started playing','info')"
+               onpause="logDebug('⏸ Video paused','warn')"
+               onended="logDebug('⏹ Video ended','info')">
+          <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+          <source src="https://www.w3schools.com/html/mov_bbb.ogg" type="video/ogg">
+          Your browser does not support the video tag.
+        </video>
+        <div id="videoStatus">✅ Video is ready to play!</div>
+      </div>
+      <p style="color:var(--muted);font-size:.82rem;margin-top:.75rem;">
+        ℹ️ <code>onbeforeunload</code> is active — navigating away while the form is unfinished will prompt a warning.
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       EXERCISE 8 · localStorage / sessionStorage Preferences
+  ═══════════════════════════════════════════════════════ -->
+  <!-- Preferences Section -->
+  <section id="preferences">
+    <div class="container" style="max-width:780px;">
+      <span class="ex-label">Exercise 8</span>
+      <h2>Saved Preferences</h2>
+      <p style="color:var(--muted);margin-bottom:1.5rem;">
+        Your preferred event type is stored in <code style="color:var(--accent2);">localStorage</code>
+        and restored on every page load.
+      </p>
+
+      <div class="card">
+        <div class="field" style="max-width:360px;margin-bottom:1.2rem;">
+          <label for="prefEvent">Preferred Event Type</label>
+          <select id="prefEvent" onchange="savePreference()">
+            <option value="">— Choose preference —</option>
+            <option value="theatre">Theatre Night</option>
+            <option value="cleanup">Park Clean-Up Drive</option>
+            <option value="wellness">Wellness Fair</option>
+            <option value="marathon">City Marathon</option>
+          </select>
+        </div>
+
+        <div class="pref-row">
+          <button class="btn btn-outline" onclick="clearPreferences()">🗑 Clear Preferences</button>
+          <span id="prefStatus" class="pref-saved"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       EXERCISE 9 · Geolocation for Event Mapping
+  ═══════════════════════════════════════════════════════ -->
+  <!-- Geolocation Section -->
+  <section id="contact">
+    <div class="container" style="max-width:780px;">
+      <span class="ex-label">Exercise 9</span>
+      <h2>Find Nearby Events</h2>
+      <p style="color:var(--muted);margin-bottom:1.5rem;">
+        Allow location access to discover events near you. Uses
+        <code style="color:var(--accent2);">getCurrentPosition</code> with high accuracy.
+      </p>
+
+      <div class="card">
+        <button class="btn" onclick="findNearbyEvents()">📍 Find Nearby Events</button>
+        <div id="geoResult" style="margin-top:1.2rem;color:var(--muted);">
+          Press the button to detect your location.
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       EXERCISE 10 · Debugging with DevTools
+  ═══════════════════════════════════════════════════════ -->
+  <!-- Debug Section -->
+  <section id="debug">
+    <div class="container" style="max-width:780px;">
+      <span class="ex-label">Exercise 10</span>
+      <h2>DevTools Debug Console</h2>
+      <p style="color:var(--muted);margin-bottom:1.5rem;">
+        In-page log mirror. Open Chrome DevTools → Console / Sources to set breakpoints
+        and inspect live variables.
+      </p>
+
+      <div class="card">
+        <div class="debug-buttons">
+          <button class="btn" onclick="dbgLog()">Log Message</button>
+          <button class="btn btn-outline" onclick="dbgWarn()">Log Warning</button>
+          <button class="btn btn-outline" onclick="dbgErr()">Log Error</button>
+          <button class="btn btn-outline" onclick="dbgBreakpoint()">Trigger Breakpoint</button>
+          <button class="btn btn-outline" onclick="clearConsoleBox()">Clear</button>
+        </div>
+        <div class="console-box" id="consoleBox">
+          <div class="log-line info">// Console mirror — actions above will log here and in DevTools</div>
+        </div>
+        <p style="color:var(--muted);font-size:.82rem;margin-top:.8rem;">
+          💡 Tip: Press <kbd style="background:var(--surface2);padding:.1em .4em;border-radius:4px;">F12</kbd>
+          → Sources tab → set breakpoints on script lines to pause execution and watch variables.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main><!-- /Main -->
+
+
+<!-- ─── Footer ──────────────────────────────────────────────── -->
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>
+      &copy; 2025 <strong>CivicConnect</strong> · Local Community Event Portal ·
+      Built with ♥ and HTML5
+    </p>
+    <p style="margin-top:.4rem;">
+      <a href="#home" style="color:var(--accent2);text-decoration:none;">↑ Back to top</a>
+    </p>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     JAVASCRIPT — All Exercises
+════════════════════════════════════════════════════════════ -->
+<script>
+/* ── Ex 4: Lightbox (ondblclick) ───────────────────────────── */
+function openLightbox(img) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = img.src.replace(/w=\d+&h=\d+/, 'w=1200&h=800');
+  lb.classList.add('open');
+  logDebug(`🔍 Lightbox opened: ${img.alt}`, 'info');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
+
+
+/* ── Ex 5: Form Submission → <output> ──────────────────────── */
+let formDirty = false;
+document.querySelectorAll('#register input, #register select, #register textarea')
+  .forEach(el => el.addEventListener('input', () => { formDirty = true; }));
+
+function submitRegistration(e) {
+  e.preventDefault();
+  const name  = document.getElementById('fullName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const type  = document.getElementById('eventType').value;
+  const date  = document.getElementById('eventDate').value;
+
+  if (!name || !email || !type || !date) {
+    alert('Please fill in all required fields.');
+    return;
+  }
+
+  const out = document.getElementById('confirmationMsg');
+  out.style.display = 'block';
+  out.textContent = `✅ Registration confirmed! Hi ${name}, you've signed up for `
+    + `"${document.getElementById('eventType').selectedOptions[0].text}" on ${date}. `
+    + `A confirmation will be sent to ${email}.`;
+  formDirty = false;
+  logDebug(`📋 Form submitted by ${name} for ${type}`, 'info');
+}
+
+function resetForm() {
+  ['fullName','email','eventDate','eventType','message'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('confirmationMsg').style.display = 'none';
+  document.getElementById('charCount').textContent = '0 / 300 characters';
+  formDirty = false;
+}
+
+function countChars(el) {
+  const len = el.value.length;
+  document.getElementById('charCount').textContent = `${len} / 300 characters`;
+  if (len > 300) el.value = el.value.substring(0, 300);
+}
+
+
+/* ── Ex 6: Blur, Change, Click, DblClick, KeyUp ────────────── */
+// onblur – phone validation
+function validatePhone(el) {
+  const status = document.getElementById('phoneStatus');
+  const val = el.value.replace(/\D/g, '');
+  if (val.length === 10) {
+    el.classList.remove('error');
+    status.className = 'phone-status ok';
+    status.textContent = '✔ Valid 10-digit phone number.';
+    logDebug('📞 Phone validated OK', 'info');
+  } else if (el.value !== '') {
+    el.classList.add('error');
+    status.className = 'phone-status err';
+    status.textContent = '✘ Must be exactly 10 digits.';
+    logDebug('⚠ Invalid phone number', 'warn');
+  } else {
+    status.textContent = '';
+    el.classList.remove('error');
+  }
+}
+
+// onchange – dropdown → event fee
+function showFee(sel) {
+  const opt = sel.selectedOptions[0];
+  const fee = opt.dataset.fee;
+  const display = document.getElementById('feeDisplay');
+  display.textContent = fee ? `Registration fee: ${fee}` : 'Select an event to see the registration fee.';
+  logDebug(`💳 Event selected: ${opt.text} (${fee || 'N/A'})`, 'info');
+}
+
+// Also feed registration form's select into Ex 8 save
+function handleEventChange(sel) {
+  showFee(sel);
+}
+
+// onclick – submit feedback
+function submitFeedback() {
+  const text = document.getElementById('feedbackText').value.trim();
+  if (!text) { alert('Please write your feedback before submitting.'); return; }
+  alert(`✅ Thank you for your feedback!\n\n"${text.substring(0, 60)}${text.length > 60 ? '…' : ''}"`);
+  logDebug('💬 Feedback submitted', 'info');
+}
+
+// enlarge demo img button (ondblclick)
+function enlargeDemoImg() {
+  const img = document.getElementById('demoImg');
+  img.style.width = img.style.width === '100%' ? '' : '100%';
+}
+
+// onkeyup – character counter in feedback textarea
+function liveCharCount(el) {
+  document.getElementById('liveCount').textContent = `${el.value.length} characters typed`;
+}
+
+
+/* ── Ex 7: Video – oncanplay ────────────────────────────────── */
+function videoReady() {
+  const status = document.getElementById('videoStatus');
+  status.style.opacity = '1';
+  logDebug('🎬 oncanplay fired — video ready', 'info');
+  setTimeout(() => { status.style.opacity = '0'; }, 4000);
+}
+
+// onbeforeunload – warn if form is dirty (Ex 7)
+window.addEventListener('beforeunload', function(e) {
+  if (formDirty) {
+    e.preventDefault();
+    e.returnValue = '';  // triggers browser dialog
+  }
+});
+
+
+/* ── Ex 8: localStorage / sessionStorage Preferences ──────── */
+function savePreference() {
+  const val = document.getElementById('prefEvent').value;
+  if (val) {
+    localStorage.setItem('preferredEvent', val);
+    sessionStorage.setItem('sessionEvent', val);
+    document.getElementById('prefStatus').textContent = `✔ Saved "${val}" to localStorage.`;
+    logDebug(`💾 localStorage.preferredEvent = "${val}"`, 'info');
+  }
+}
+
+function clearPreferences() {
+  localStorage.clear();
+  sessionStorage.clear();
+  document.getElementById('prefEvent').value = '';
+  document.getElementById('prefStatus').textContent = '🗑 Preferences cleared from localStorage & sessionStorage.';
+  logDebug('🗑 localStorage & sessionStorage cleared', 'warn');
+}
+
+function loadPreferences() {
+  const saved = localStorage.getItem('preferredEvent');
+  if (saved) {
+    document.getElementById('prefEvent').value = saved;
+    // Also pre-select in registration form if present
+    const regSel = document.getElementById('eventType');
+    if (regSel) {
+      const opt = regSel.querySelector(`option[value="${saved}"]`);
+      if (opt) regSel.value = saved;
+    }
+    document.getElementById('prefStatus').textContent = `ℹ Loaded saved preference: "${saved}"`;
+    logDebug(`📂 Preference restored from localStorage: "${saved}"`, 'info');
+  }
+}
+// Run on page load
+window.addEventListener('DOMContentLoaded', loadPreferences);
+
+
+/* ── Ex 9: Geolocation ──────────────────────────────────────── */
+function findNearbyEvents() {
+  const result = document.getElementById('geoResult');
+  result.style.color = 'var(--muted)';
+  result.innerHTML = '⏳ Detecting your location…';
+
+  if (!navigator.geolocation) {
+    result.style.color = 'var(--danger)';
+    result.textContent = '❌ Geolocation is not supported by your browser.';
+    return;
+  }
+
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 8000,
+    maximumAge: 0
+  };
+
+  navigator.geolocation.getCurrentPosition(
+    // Success
+    function(pos) {
+      const { latitude, longitude, accuracy } = pos.coords;
+      result.style.color = 'var(--success)';
+      result.innerHTML = `
+        <strong>📍 Location Found!</strong><br>
+        Latitude: <span style="color:var(--accent)">${latitude.toFixed(5)}</span><br>
+        Longitude: <span style="color:var(--accent)">${longitude.toFixed(5)}</span><br>
+        Accuracy: ±${Math.round(accuracy)} metres<br><br>
+        <em style="color:var(--muted)">Searching for events within 5 km of your location…</em><br>
+        <span style="color:var(--accent2)">🎭 Theatre Night — 1.2 km away</span><br>
+        <span style="color:var(--accent2)">🌳 Park Clean-Up — 2.8 km away</span>
+      `;
+      logDebug(`📍 Geo: ${latitude.toFixed(4)}, ${longitude.toFixed(4)} (±${Math.round(accuracy)}m)`, 'info');
+    },
+    // Error handler
+    function(err) {
+      result.style.color = 'var(--danger)';
+      const msgs = {
+        1: '🔒 Permission denied. Please allow location access in your browser settings.',
+        2: '📡 Position unavailable. Could not detect your location.',
+        3: '⏱ Request timed out. Try again or check your connection.',
+      };
+      result.textContent = msgs[err.code] || `❌ Error: ${err.message}`;
+      logDebug(`❌ Geo error (code ${err.code}): ${err.message}`, 'err');
+    },
+    options
+  );
+}
+
+
+/* ── Ex 10: DevTools Debug Console ─────────────────────────── */
+function logDebug(msg, type = 'log') {
+  const box = document.getElementById('consoleBox');
+  const line = document.createElement('div');
+  line.className = `log-line ${type}`;
+  const timestamp = new Date().toLocaleTimeString();
+  line.textContent = `[${timestamp}] ${msg}`;
+  box.appendChild(line);
+  box.scrollTop = box.scrollHeight;
+
+  // Also log to real DevTools console
+  if (type === 'warn') console.warn(msg);
+  else if (type === 'err') console.error(msg);
+  else console.log(msg);
+}
+
+function dbgLog() {
+  const vars = { user: 'Priya', eventCount: 3, preferredEvent: localStorage.getItem('preferredEvent') || 'none' };
+  logDebug(`LOG — user state: ${JSON.stringify(vars)}`, 'log');
+}
+function dbgWarn() {
+  logDebug('WARN — localStorage quota approaching 80%', 'warn');
+}
+function dbgErr() {
+  logDebug('ERROR — Failed to fetch events API (simulated)', 'err');
+}
+function dbgBreakpoint() {
+  // Place a debugger statement — pauses in DevTools if Sources panel is open
+  // debugger; // (commented out so it doesn't freeze the demo; uncomment to test)
+  const x = 42;
+  const y = x * 2;
+  logDebug(`BREAKPOINT demo: x=${x}, y=${y} — open DevTools Sources to set real breakpoints`, 'info');
+  console.log('DevTools breakpoint demo:', { x, y });
+}
+function clearConsoleBox() {
+  const box = document.getElementById('consoleBox');
+  box.innerHTML = '<div class="log-line info">// Console cleared</div>';
+}
+
+// Log page load
+window.addEventListener('DOMContentLoaded', () => {
+  logDebug('🚀 CivicConnect portal loaded — DOM ready', 'info');
+});
+</script>
+
+</body>
+</html>
